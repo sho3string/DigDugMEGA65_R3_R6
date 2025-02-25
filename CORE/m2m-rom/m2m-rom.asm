@@ -1,12 +1,11 @@
 ; ****************************************************************************
-; YOUR-PROJECT-NAME (GITHUB-REPO-SHORTNAME) QNICE ROM
+; Galaga MEGA65 (GalagaMEGA65) QNICE ROM
 ;
 ; Main program that is used to build m2m-rom.rom by make-rom.sh.
-; The ROM is loaded by TODO-ADD-NAME-OF-VHDL-FILE-HERE.
 ;
 ; The execution starts at the label START_FIRMWARE.
 ;
-; done by YOURNAME in YEAR and licensed under GPL v3
+; done by Samuel P ( Muse ) in 2023 and licensed under GPL v3
 ; ****************************************************************************
 
 ; If the define RELEASE is defined, then the ROM will be a self-contained and
@@ -210,9 +209,9 @@ END_OF_ROM      .DW 0
 ; The On-Screen-Menu uses the heap for several data structures. This heap
 ; is located before the main system heap in memory.
 ; You need to deduct MENU_HEAP_SIZE from the actual heap size below.
-; Example: If your HEAP_SIZE would be 29696, then you write 29696-1024=28672
+; Example: If your HEAP_SIZE would be 29696, then you write 29696-1536=28160
 ; instead, but when doing the sanity check calculations, you use 29696
-MENU_HEAP_SIZE  .EQU 1024
+MENU_HEAP_SIZE  .EQU 2048
 
 #ifndef RELEASE
 
@@ -220,14 +219,14 @@ MENU_HEAP_SIZE  .EQU 1024
 ; this needs to be the last variable before the monitor variables as it is
 ; only defined as "BLOCK 1" to avoid a large amount of null-values in
 ; the ROM file
-HEAP_SIZE       .EQU 6144                       ; 7168 - 1024 = 6144
+HEAP_SIZE       .EQU 5120                       ; 7168 - 2048 = 5120
 HEAP            .BLOCK 1
 
 ; in RELEASE mode: 28k of heap which leads to a better user experience when
 ; it comes to folders with a lot of files
 #else
 
-HEAP_SIZE       .EQU 28672                      ; 29696 - 1024 = 28672
+HEAP_SIZE       .EQU 27648                      ; 29696 - 2048 = 27648
 HEAP            .BLOCK 1
 
 ; The monitor variables use 22 words, round to 32 for being safe and subtract
@@ -236,9 +235,9 @@ HEAP            .BLOCK 1
 ; The stack starts at 0xFEE0 (search var VAR$STACK_START in osm_rom.lis to
 ; calculate the address). To see, if there is enough room for the stack
 ; given the HEAP_SIZE do this calculation: Add 29696 words to HEAP which
-; is currently 0xXXXX and subtract the result from 0xFEE0. This yields
-; currently a stack size of more than 1.5k words, which is sufficient
-; for this program.
+; is currently 0x81C7 and subtract the result from 0xFEE0. This yields
+; currently a stack size of 2329, more than 1.5k words, and therefore
+; sufficient for this program.
 
                 .ORG    0xFEE0                  ; TODO: automate calculation
 #endif
@@ -248,7 +247,7 @@ HEAP            .BLOCK 1
 ; B_STACK_SIZE: Size of local stack of the the file- and directory browser. It
 ; should also have a minimum size of 768 words. If you are not using the
 ; Shell, then B_STACK_SIZE is not used.
-STACK_SIZE      .EQU    1536
+STACK_SIZE      .EQU    2048
 B_STACK_SIZE    .EQU    768
 
 #include "../../M2M/rom/main_vars.asm"
