@@ -10,6 +10,7 @@ $length = 56
 	New-Item -ItemType Directory -Path $WorkingDirectory"\arcade\digdug" -Force
 
 	Write-Output "Copying Dig Dug ROMs"
+	# z80 main cpu
 	# Define the file paths within the folder
 	$files = @("$WorkingDirectory\dd1a.1", "$WorkingDirectory\dd1a.2", "$WorkingDirectory\dd1a.3", "$WorkingDirectory\dd1a.4")
 	# Specify the output file within the folder
@@ -21,6 +22,20 @@ $length = 56
 	}
 	[System.IO.File]::WriteAllBytes($outputFile, $combinedBytes)
 	
+	# z80 sub cpu
+	$files = @("$WorkingDirectory\dd1a.5", "$WorkingDirectory\dd1a.6")
+	# Specify the output file within the folder
+	$outputFile = "$WorkingDirectory\arcade\digdug\rom2.rom"
+	# Concatenate the files as binary data
+	[Byte[]]$combinedBytes = @()
+	foreach ($file in $files) {
+		$combinedBytes += [System.IO.File]::ReadAllBytes($file)
+	}
+	[System.IO.File]::WriteAllBytes($outputFile, $combinedBytes)
+	
+	# z80 sound cpu
+	Copy-Item -Path $WorkingDirectory\dd1.7 -Destination $WorkingDirectory\arcade\digdug\rom3.rom
+
 	Write-Output "Copying Gfx #2 ROMs"
 	# Define the file paths within the folder
 	$files = @("$WorkingDirectory\dd1.15", "$WorkingDirectory\dd1.14", "$WorkingDirectory\dd1.13", "$WorkingDirectory\dd1.12")

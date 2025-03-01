@@ -13,11 +13,16 @@ echo " '------------------------'"
 mkdir -p "$WorkingDirectory/arcade/digdug"
 
 echo "Copying Dig Dug ROMs"
-# Concatenate the files into one
+# z80 main cpu
 cat "$WorkingDirectory/dd1a.1" "$WorkingDirectory/dd1a.2" "$WorkingDirectory/dd1a.3" "$WorkingDirectory/dd1a.4" > "$WorkingDirectory/arcade/digdug/rom1.rom"
 
+# z80 sub cpu
+cat "$WorkingDirectory/dd1a.5" "$WorkingDirectory/dd1a.6" > "$WorkingDirectory/arcade/digdug/rom2.rom"
+
+# z80 sound cpu
+cp "$WorkingDirectory/dd1.7" "$WorkingDirectory/arcade/digdug/rom3.rom"
+
 echo "Copying Gfx #2 ROMs"
-# Concatenate the files into one
 cat "$WorkingDirectory/dd1.15" "$WorkingDirectory/dd1.14" "$WorkingDirectory/dd1.13" "$WorkingDirectory/dd1.12" > "$WorkingDirectory/arcade/digdug/gfx2.rom"
 
 echo "Copying Gfx #3 ROM"
